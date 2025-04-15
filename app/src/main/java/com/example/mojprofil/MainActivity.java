@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                         emailText.setText(emailChangeText);
                         passwordText.setText(passwordChangeText);
                         notifiView.setTextColor(Color.GREEN);
-                        notifiView.setText("Profil zaktualizowany! Nowy email:");
+                        notifiView.setText("Profil zaktualizowany! Nowy email: " + emailChangeText);
                     }
                 })
                 .setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
