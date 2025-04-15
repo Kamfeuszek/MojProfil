@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     TextView passwordText;
     Button editProfileButton;
     TextView notifiView;
+    int switchState = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Zapisz", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        switchState = 0;
                         String emailChangeText = changeEmailText.getText().toString().trim();
                         String passwordChangeText = changePasswordText.getText().toString().trim();
                         String passwordRepeatChangeText = changePasswordRepeatText.getText().toString().trim();
@@ -97,10 +99,19 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         notifiView.setTextColor(Color.GRAY);
                         notifiView.setText("Edycja profilu anulowana");
+                        switchState = 0;
                         dialogInterface.cancel();
                     }
                 });
-
+        AlertDialog dialog2 = builder2.create();
+        dialog2.setOnShowListener(new DialogInterface.OnShowListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button positiveButton= ((AlertDialog)dialog2).getButton(DialogInterface.BUTTON_POSITIVE);
+                positiveButton.setBackgroundColor(R.color.light_blue);
+            }
+        });
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Zmień email")
                 .setMessage("Podaj nowy email: ")
@@ -108,21 +119,13 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Zapisz", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        AlertDialog dialog2 = builder2.create();
-                        dialog2.setOnShowListener(new DialogInterface.OnShowListener() {
-                            @SuppressLint("ResourceAsColor")
-                            @Override
-                            public void onShow(DialogInterface dialogInterface) {
-                                Button positiveButton= ((AlertDialog)dialog2).getButton(DialogInterface.BUTTON_POSITIVE);
-                                positiveButton.setBackgroundColor(R.color.light_blue);
-                            }
-                        });
                         dialog2.show();
                     }
                 })
                 .setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        switchState = 1;
                         dialogInterface.cancel();
                     }
                 });
@@ -135,6 +138,10 @@ public class MainActivity extends AppCompatActivity {
                 positiveButton.setBackgroundColor(R.color.light_blue);
             }
         });
-        dialog.show();
+        if(switchState == 0) {
+            dialog.show();
+        } else {
+            dialog2.show();
+        }
     }
 }
